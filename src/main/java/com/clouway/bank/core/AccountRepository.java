@@ -9,5 +9,5 @@ public interface AccountRepository {
 
   void deposit(String username, double deposit);
 
-  Double getBalance(String username);
+  Double getCurrentBalance(String username);
 }
