@@ -6,9 +6,18 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * Validates transaction data
+ *
  * @author Krasimir Raikov(raikov.krasimir@gmail.com)
  */
 public class BankTransactionValidator implements TransactionValidator {
+
+  /**
+   * Validates the amount of funds in the transaction
+   *
+   * @param amount to be validated
+   * @return empty string if the amount is valid, and error message if it is not
+   */
   @Override
   public String validateAmount(String amount) {
     String amountRegex = "^([0-9]{1,5}).([0-9]{1,2})$";

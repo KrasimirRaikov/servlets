@@ -2,12 +2,14 @@ package com.clouway.bank;
 
 import com.clouway.bank.adapter.serlet.jetty.Jetty;
 import com.clouway.bank.core.AccountRepository;
+import com.clouway.bank.core.TransactionValidator;
 import com.clouway.bank.persistent.PerRequestConnectionProvider;
 import com.clouway.bank.persistent.PersistentAccountRepository;
 import com.clouway.bank.utils.AccountRepositoryUtility;
 import com.clouway.bank.utils.DatabaseConnectionRule;
 import com.clouway.bank.utils.UserRepositoryUtility;
 import org.apache.commons.io.IOUtils;
+import org.jmock.auto.Mock;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -42,6 +44,9 @@ public class DepositTest {
   private UserRepositoryUtility userRepositoryUtility;
   private Double amount;
 
+  @Mock
+  TransactionValidator validator;
+
   public DepositTest(java.lang.Double amount) {
     this.amount = amount;
   }
@@ -56,7 +61,7 @@ public class DepositTest {
   @Before
   public void setUp() throws SQLException {
     jetty = new Jetty(8080, "bank_test");
-    accountRepository = new PersistentAccountRepository(new PerRequestConnectionProvider());
+    accountRepository = new PersistentAccountRepository(new PerRequestConnectionProvider(), validator);
     jetty.start();
     connection = connectionRule.getConnection();
     accountRepositoryUtility = new AccountRepositoryUtility(connection);
