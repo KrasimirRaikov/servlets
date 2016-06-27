@@ -1,7 +1,5 @@
 package com.clouway.bank.core;
 
-import com.clouway.bank.persistent.User;
-
 /**
  * @author Krasimir Raikov(raikov.krasimir@gmail.com)
  */

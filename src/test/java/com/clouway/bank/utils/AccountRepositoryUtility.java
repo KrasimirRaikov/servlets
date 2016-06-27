@@ -15,7 +15,7 @@ public class AccountRepositoryUtility {
     this.connection = connection;
   }
 
-  public void instantiateAccount(String username){
+  public void instantiateAccount(String username) {
     PreparedStatement preparedStatement = null;
     try {
       preparedStatement = connection.prepareStatement("INSERT INTO account VALUES (?, ?)");
@@ -27,7 +27,7 @@ public class AccountRepositoryUtility {
     }
   }
 
-  public void clearAccountTable(){
+  public void clearAccountTable() {
     try {
       Statement statement = connection.createStatement();
       statement.execute("DELETE FROM account;");

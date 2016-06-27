@@ -10,7 +10,7 @@ public class BracketsTemplate implements Template {
   private final Map<String, String> placeHolderToValue = new LinkedHashMap<String, String>();
   private String template;
 
-  public void setTemplate(String template){
+  public void setTemplate(String template) {
     this.template = template;
   }
 

@@ -1,7 +1,5 @@
 package com.clouway.bank.filters;
 
-import com.clouway.bank.core.AccountRepository;
-import com.clouway.bank.persistent.PersistentAccountRepository;
 import com.mysql.cj.jdbc.MysqlConnectionPoolDataSource;
 
 import javax.servlet.Filter;
@@ -20,12 +18,16 @@ import java.sql.SQLException;
  */
 @WebFilter(filterName = "ConnectionFilter")
 public class ConnectionFilter implements Filter {
-  private MysqlConnectionPoolDataSource connectionPool;
   private static ThreadLocal<Connection> connections = new ThreadLocal<Connection>();
+  private MysqlConnectionPoolDataSource connectionPool;
   private String dbName;
 
   public ConnectionFilter(String dbName) {
     this.dbName = dbName;
+  }
+
+  public static Connection getConnection() {
+    return connections.get();
   }
 
   public void destroy() {
@@ -46,20 +48,16 @@ public class ConnectionFilter implements Filter {
 
   public void init(FilterConfig config) throws ServletException {
     connectionPool = new MysqlConnectionPoolDataSource();
-    connectionPool.setURL("jdbc:mysql://localhost:3306/"+dbName+"?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC");
+    connectionPool.setURL("jdbc:mysql://localhost:3306/" + dbName + "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC");
     connectionPool.setUser("root");
     connectionPool.setPassword("clouway.com");
 
-    try{
+    try {
       Connection connection = connectionPool.getConnection();
       connections.set(connection);
     } catch (SQLException e) {
       e.printStackTrace();
     }
-  }
-
-  public static Connection getConnection(){
-    return connections.get();
   }
 
 }

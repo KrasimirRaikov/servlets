@@ -1,9 +1,7 @@
 package com.clouway.bank.persistent;
 
-import com.clouway.bank.PerRequestConnectionProvider;
 import com.clouway.bank.core.AccountRepository;
 import com.clouway.bank.core.ConnectionProvider;
-import com.clouway.bank.filters.ConnectionFilter;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,7 +24,7 @@ public class PersistentAccountRepository implements AccountRepository {
       Connection connection = connectionProvider.get();
 
       double currentBalance = getCurrentBalance(username);
-      double newBalance = currentBalance+amount;
+      double newBalance = currentBalance + amount;
 
       PreparedStatement preparedStatement = connection.prepareStatement("UPDATE account SET balance=? WHERE username=?");
       preparedStatement.setDouble(1, newBalance);

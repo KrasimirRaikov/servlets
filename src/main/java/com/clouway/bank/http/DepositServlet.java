@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.bind.ValidationException;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,12 +29,8 @@ public class DepositServlet extends HttpServlet {
 
   @Override
   public void init() throws ServletException {
-    try {
-
-      template.setTemplate(getHtml("web/WEB-INF/pages/Deposit.html"));
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    template.setTemplate(getHtml("web/WEB-INF/pages/Deposit.html"));
+    template.put("errorMessage", "");
   }
 
   @Override
@@ -51,16 +48,28 @@ public class DepositServlet extends HttpServlet {
   protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
     String username = "Stanislava";
     String amount = req.getParameter("amount");
-    controller.deposit(username, Double.parseDouble(amount));
+    try {
+      controller.deposit(username, amount);
+      template.put("errorMessage", "");
+    } catch (ValidationException e) {
+      template.put("errorMessage", e.getMessage() + "<br>");
+    }
     doGet(req, resp);
   }
 
-  private String getHtml(String filePath) throws IOException {
+  private String getHtml(String filePath) {
     File file = new File(filePath);
-    URL url = file.toURI().toURL();
-    InputStream in = url.openStream();
+    URL url = null;
+    try {
+      url = file.toURI().toURL();
+      InputStream in = url.openStream();
 
-    return IOUtils.toString(in);
+      return IOUtils.toString(in);
+
+    } catch (IOException e) {
+      return "404 Page not found!";
+    }
+
   }
 
 

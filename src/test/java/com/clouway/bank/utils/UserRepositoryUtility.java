@@ -15,7 +15,7 @@ public class UserRepositoryUtility {
     this.connection = connection;
   }
 
-  public void registerUser(String username, String password){
+  public void registerUser(String username, String password) {
     PreparedStatement preparedStatement = null;
     try {
       preparedStatement = connection.prepareStatement("INSERT INTO users VALUES (?, ?)");
@@ -28,7 +28,7 @@ public class UserRepositoryUtility {
 
   }
 
-  public void clearUsersTable(){
+  public void clearUsersTable() {
     try {
       Statement statement = connection.createStatement();
       statement.execute("DELETE FROM users;");

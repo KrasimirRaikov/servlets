@@ -20,9 +20,10 @@
             <form action="deposit" method="post">
                 <div class="form-group">
                     <label for="amount">Amount to deposit</label>
-                    <input type="number" min="0" max="100" class="form-control" step="0.01" placeholder="Amount"
-                           name="amount"
-                           id="amount"><br>
+                    <input type="number" min="0" max="10000" class="form-control" step="0.01" placeholder="Amount"
+                           name="amount" id="amount" aria-describedby="amountMessage"><br>
+                    <span id="amountMessage" class="help-block"><p class="text-danger">${errorMessage}</p></span>
+
                     <input type="submit" value="Deposit" class="btn btn-default">
                 </div>
             </form>

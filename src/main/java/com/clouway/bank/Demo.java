@@ -1,6 +1,6 @@
 package com.clouway.bank;
 
-import javax.servlet.ServletException;
+import com.clouway.bank.adapter.serlet.jetty.Jetty;
 
 /**
  * @author Krasimir Raikov(raikov.krasimir@gmail.com)
