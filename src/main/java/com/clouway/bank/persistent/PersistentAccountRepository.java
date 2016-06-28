@@ -39,7 +39,7 @@ public class PersistentAccountRepository implements AccountRepository {
    * @throws ValidationException
    */
   @Override
-  public void deposit(String username, String amount) throws ValidationException {
+  public Double deposit(String username, String amount) throws ValidationException {
     String validationMessage = validator.validateAmount(amount);
     try {
       if ("".equals(validationMessage)) {
@@ -53,11 +53,12 @@ public class PersistentAccountRepository implements AccountRepository {
         preparedStatement.setDouble(1, newBalance);
         preparedStatement.setString(2, username);
         preparedStatement.executeUpdate();
+        return newBalance;
       } else {
         throw new ValidationException(validationMessage);
       }
     } catch (SQLException e) {
-      e.printStackTrace();
+      throw new ValidationException("no such user");
     }
   }
 
@@ -68,7 +69,7 @@ public class PersistentAccountRepository implements AccountRepository {
    * @return
    */
   @Override
-  public Double getCurrentBalance(String username) {
+  public Double getCurrentBalance(String username) throws ValidationException {
     try {
       Connection connection = connectionProvider.get();
       PreparedStatement preparedStatement = connection.prepareStatement("SELECT balance FROM account WHERE username=?");
@@ -78,8 +79,7 @@ public class PersistentAccountRepository implements AccountRepository {
       Double balance = resultSet.getDouble("balance");
       return balance;
     } catch (SQLException e) {
-      e.printStackTrace();
+      throw new ValidationException("no such user!");
     }
-    return null;
   }
 }

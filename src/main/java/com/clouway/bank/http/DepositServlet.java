@@ -46,6 +46,8 @@ public class DepositServlet extends HttpServlet {
   public void init() throws ServletException {
     template.setTemplate(getHtml("web/WEB-INF/pages/Deposit.html"));
     template.put("errorMessage", "");
+    template.put("username", "no user yet");
+    template.put("balance", "not available");
   }
 
   /**
@@ -58,12 +60,20 @@ public class DepositServlet extends HttpServlet {
    */
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    String username = "Stanislava";
-    Double balance = accountRepository.getCurrentBalance(username);
+    String username = req.getParameter("username");
+    if (username != null) {
+      Double balance = null;
+      try {
+        balance = accountRepository.getCurrentBalance(username);
+      } catch (ValidationException e) {
+        balance=0d;
+      }
+
+      template.put("username", username);
+      template.put("balance", balance.toString());
+    }
     PrintWriter writer = resp.getWriter();
     resp.setContentType("text/html");
-    template.put("username", username);
-    template.put("balance", balance.toString());
     writer.write(template.evaluate());
   }
 
@@ -77,15 +87,23 @@ public class DepositServlet extends HttpServlet {
    */
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    String username = "Stanislava";
-    String amount = req.getParameter("amount");
-    try {
-      accountRepository.deposit(username, amount);
-      template.put("errorMessage", "");
-    } catch (ValidationException e) {
-      template.put("errorMessage", e.getMessage() + "<br>");
+    String username = req.getParameter("username");
+    Double doubleAmount = null;
+    if (username != null) {
+      String amount = req.getParameter("amount");
+      try {
+        doubleAmount = accountRepository.deposit(username, amount);
+        template.put("errorMessage", "");
+        template.put("username", username);
+        template.put("balance", doubleAmount.toString());
+      } catch (ValidationException e) {
+        template.put("errorMessage", e.getMessage() + "<br>");
+      }
+
     }
-    doGet(req, resp);
+    PrintWriter writer = resp.getWriter();
+    resp.setContentType("text/html");
+    writer.write(template.evaluate());
   }
 
   /**

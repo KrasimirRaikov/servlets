@@ -82,7 +82,7 @@ public class DepositTest {
 
   @Test
   public void depositFunds() throws Exception {
-    String url = "http://localhost:8080/deposit?amount=" + amount;
+    String url = "http://localhost:8080/deposit?username=Stanislava&amount=" + amount;
 
     URL urlObj = new URL(url);
 
@@ -98,7 +98,7 @@ public class DepositTest {
 
   @Test
   public void multipleDeposits() throws Exception {
-    String url = "http://localhost:8080/deposit?amount=" + amount;
+    String url = "http://localhost:8080/deposit?username=Stanislava&amount=" + amount;
 
     URL urlObj = new URL(url);
 
@@ -121,7 +121,7 @@ public class DepositTest {
 
   @Test
   public void invalidAmount() throws IOException {
-    String url = "http://localhost:8080/deposit?amount=e" + amount;
+    String url = "http://localhost:8080/deposit?username=Stanislava&amount=e" + amount;
 
     URL urlObj = new URL(url);
 
@@ -144,7 +144,7 @@ public class DepositTest {
 
   @Test
   public void negativeDeposit() throws IOException {
-    String url = "http://localhost:8080/deposit?amount=-" + amount;
+    String url = "http://localhost:8080/deposit?username=Stanislava&amount=-" + amount;
 
     URL urlObj = new URL(url);
 

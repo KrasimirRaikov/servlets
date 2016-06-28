@@ -16,7 +16,7 @@ public interface AccountRepository {
    * @param amount   amount of funds to deposit
    * @throws ValidationException
    */
-  void deposit(String username, String amount) throws ValidationException;
+  Double deposit(String username, String amount) throws ValidationException;
 
 
   /**
@@ -25,5 +25,5 @@ public interface AccountRepository {
    * @param username user identification
    * @return the balance for the given user
    */
-  Double getCurrentBalance(String username);
+  Double getCurrentBalance(String username) throws ValidationException;
 }
